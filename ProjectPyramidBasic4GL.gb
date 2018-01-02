@@ -1,0 +1,96 @@
+'posisi mata 
+Dim pmatax# = 0
+Dim pmatay# = 0 
+Dim pmataz# = 5
+
+'posisi titik pandang 
+Dim ppandangx# = 0 
+Dim ppandangy# = 0
+Dim ppandangz# = -5 
+
+Dim pindah# = 0.01   
+
+'variabel untuk menyimpan gambar tekstur
+Dim tekstur
+tekstur = loadmipmaptexture("gbr/piramid.jpg")   
+Dim tekstur1
+tekstur1 = loadmipmaptexture("gbr/pasir.jpg")                                           
+
+'beritahu bahwa akan menggunakan tekstur
+glEnable(gl_texture_2d)
+
+while true 
+glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+glLoadIdentity()
+
+gluLookAt(pmatax#, pmatay#, pmataz#, ppandangx#, ppandangy#, ppandangz#, 0,1,0)
+
+glBindTexture(gl_texture_2d, tekstur)
+
+glBegin(GL_TRIANGLES)  'sisi depan 
+   glTexCoord2d(0.5,1)
+   glVertex3f(0, 0.5, 0) 
+   glTexCoord2d(1,0)
+   glVertex3f(1, -1, -1)
+   glTexCoord2d(0,0)
+   glVertex3f( -1,-1, -1)
+glEnd()                                      
+
+glBegin(GL_TRIANGLES)  'sisi belakang 
+   glTexCoord2d(0.5,1)
+   glVertex3f(0, 0.5, 0)
+   glTexCoord2d(0,0)
+   glVertex3f(1, -1, 1) 
+   glTexCoord2d(1,0)
+   glVertex3f(-1, -1, 1)
+glEnd()                                        
+       
+glBegin(GL_TRIANGLES)  'sisi kiri
+   glTexCoord2d(0.5,0)
+   glVertex3f(0, 0.5, 0)   
+   glTexCoord2d(1,1)
+   glVertex3f(-1, -1, 1)
+   glTexCoord2d(0,1)
+   glVertex3f(-1, -1, -1)
+glEnd()   
+
+glBegin(GL_TRIANGLES)  'sisi kanan 
+   glTexCoord2d(0.5,0)
+   glVertex3f(0, 0.5, 0)
+   glTexCoord2d(1,1)
+   glVertex3f(1, -1, 1)
+   glTexCoord2d(0,1)
+   glVertex3f(1, -1, -1)
+glEnd()   
+     
+glBindTexture(gl_texture_2d, tekstur1)
+
+glBegin(GL_QUADS)  'sisibelakang
+   glTexCoord2d(0,1)
+   glVertex3f(3, -1, -3)  
+   glTexCoord2d(0,0)
+   glVertex3f(3, -1, 3)
+   glTexCoord2d(1,0)
+   glVertex3f(-3, -1, 3) 
+   glTexCoord2d(1,1)
+   glVertex3f(-3, -1, -3)
+glEnd()
+
+swapBuffers()
+
+if scankeydown(VK_RIGHT) then 
+   pmatax# = pmatax# + pindah#
+   'ppandangx# = ppandangx# + pindah#
+elseif scankeydown(VK_LEFT) then 
+   pmatax# = pmatax# - pindah#      
+   'ppandangx# = ppandangx# - pindah#
+elseif scankeydown(VK_UP )then 
+    pmatay# = pmatay# + pindah#
+  	'ppandangy# = ppandangy# + pindah#
+elseif scankeydown(VK_DOWN )then 
+    pmatay# = pmatay# - pindah#      
+	'ppandangy# = ppandangy# - pindah#
+
+endif
+
+wend
